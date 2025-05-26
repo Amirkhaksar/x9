@@ -1,0 +1,55 @@
+project_name: x9
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - main: ./cmd/x9
+    binary: x9
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+    ignore:
+      - goos: windows
+        goarch: arm
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
+    replacements:
+      darwin: macOS
+    files:
+      - README.MD
+      - LICENSE
+
+checksum:
+  name_template: 'checksums.txt'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - Merge pull request
+      - Merge branch
+
+release:
+  github:
+    owner: amirkhaksar
+    name: x9
+  draft: false
+  prerelease: auto
+  mode: replace

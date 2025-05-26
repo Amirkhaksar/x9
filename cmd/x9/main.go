@@ -3,11 +3,19 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/projectdiscovery/goflags"
 	"os"
+
+	"github.com/projectdiscovery/goflags"
 
 	"github.com/amirkhaksar/x9/internal/options"
 	"github.com/amirkhaksar/x9/internal/x9engine"
+)
+
+// Version information - will be injected during build by goreleaser
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
 )
 
 func printBanner() {
@@ -19,7 +27,7 @@ func printBanner() {
      /_/\_\  /_/
 
  `
-	fmt.Println(banner)
+	fmt.Printf("%sVersion: %s (%s) - %s\n", banner, version, commit, date)
 }
 
 var (
